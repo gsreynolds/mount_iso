@@ -6,7 +6,7 @@ remote_file "#{Chef::Config[:file_cache_path]}/test.iso" do
 end
 
 if platform?('windows')
-  mount 'Z:' do
+  windows_mount_iso 'Z:' do
     device test_iso
     action :mount
   end
