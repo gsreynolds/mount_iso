@@ -1,0 +1,12 @@
+---
+driver:
+  name: ec2
+  region: eu-west-1
+  instance_type: t2.xlarge
+  shared_credentials_profile: solutions-architects
+  tags:
+    X-Contact: <%= ENV['USER'] %>
+    X-Application: "Test-Kitchen"
+    X-Customer: "Test-Kitchen"
+    X-Project: "Test-Kitchen"
+    X-TTL: '4'
