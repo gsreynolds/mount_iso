@@ -1,6 +1,6 @@
 resource_name :windows_mount_iso
 
-description "Use the mount_iso resource to mount an ISO on Windows."
+description "Use the windows_mount_iso resource to mount an ISO on Windows."
 
 default_action :mount
 allowed_actions :mount, :umount #, :unmount, :remount, :enable, :disable
@@ -33,4 +33,12 @@ action :mount do
 end
 
 action :umount do
+  powershell_script 'Dismount ISO' do
+    code <<-EOH
+    Dismount-DiskImage '#{new_resource.device}'
+    EOH
+    only_if <<-EOH
+    (Get-DiskImage '#{new_resource.device}').Attached
+    EOH
+  end
 end
