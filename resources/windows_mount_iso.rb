@@ -23,7 +23,8 @@ action :mount do
 
   powershell_script 'Set ISO drive letter' do
     code <<-EOH
-    gwmi win32_volume -Filter "Label = '$((Get-DiskImage -ImagePath '#{new_resource.device}' | Get-Volume).FileSystemLabel)'" | swmi -Arguments @{DriveLetter="#{new_resource.mount_point}"}
+    $Label = (Get-DiskImage -ImagePath '#{new_resource.device}' | Get-Volume).FileSystemLabel
+    Get-CimInstance -Class Win32_Volume -Filter "Label='$Label'" | Set-CimInstance -Arguments @{DriveLetter="#{new_resource.mount_point}"}
     EOH
     not_if <<-EOH
     ((Get-DiskImage '#{new_resource.device}' | Get-Volume).DriveLetter + ':' -ieq '#{new_resource.mount_point}')
